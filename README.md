@@ -1,12 +1,7 @@
-$pakiet = 'Microsoft.Winget.Source'
+foreach ($p in (Get-AppxPackage -AllUsers -Name 'Microsoft.Winget.Source')) {
+    Remove-AppxPackage -Package $p.PackageFullName -AllUsers -ErrorAction Stop
+}
 
-Get-AppxPackage -AllUsers -Name $pakiet |
-    ForEach-Object {
-        Remove-AppxPackage -Package $_.PackageFullName -AllUsers -ErrorAction Stop
-    }
-
-Get-AppxProvisionedPackage -Online |
-    Where-Object { $_.DisplayName -eq $pakiet } |
-    ForEach-Object {
-        Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -ErrorAction Stop
-    }
+foreach ($p in (Get-AppxProvisionedPackage -Online | Where-Object DisplayName -eq 'Microsoft.Winget.Source')) {
+    Remove-AppxProvisionedPackage -Online -PackageName $p.PackageName -ErrorAction Stop
+}
