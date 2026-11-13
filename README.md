@@ -44,3 +44,13 @@ foreach ($adres in $adresy) {
     }
 }
 try { $regulaDiag = New-Object -ComObject HNetCfg.FWRule; $regulaDiag.Protocol = 6; $regulaDiag.RemoteAddresses = "10.60.0.11"; Write-Host "OK" } catch { $_.Exception.ToString() }
+
+
+Get-Content "C:\ProgramData\NovaLabStart\MASTER-RAPORT.json" -Raw |
+    ConvertFrom-Json |
+    Select-Object status, template_ip, gateway, web_accounts, task_datasets
+
+
+
+
+
