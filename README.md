@@ -23,3 +23,23 @@ Get-NetFirewallRule -Group "NovaLabStart" -ErrorAction SilentlyContinue |
         )
     } |
     Remove-NetFirewallRule
+
+
+$adresy = @(
+    "0.0.0.0-10.60.0.10",
+    "10.60.0.12-10.60.0.253",
+    "10.60.0.255-255.255.255.255",
+    "::/0",
+    "0.0.0.1-10.60.0.10",
+    "10.60.0.255-255.255.255.254"
+)
+
+foreach ($adres in $adresy) {
+    try {
+        $test = New-Object -ComObject HNetCfg.FWRule
+        $test.RemoteAddresses = $adres
+        Write-Host "OK: $adres"
+    } catch {
+        Write-Host "BLAD: $adres"
+    }
+}
