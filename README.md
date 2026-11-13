@@ -43,3 +43,4 @@ foreach ($adres in $adresy) {
         Write-Host "BLAD: $adres"
     }
 }
+try { $regulaDiag = New-Object -ComObject HNetCfg.FWRule; $regulaDiag.Protocol = 6; $regulaDiag.RemoteAddresses = "10.60.0.11"; Write-Host "OK" } catch { $_.Exception.ToString() }
