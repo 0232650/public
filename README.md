@@ -11,3 +11,15 @@ Remove-NetRoute -InterfaceIndex 6 -DestinationPrefix "0.0.0.0/0" -NextHop "10.60
 
 
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "F:\MASTER.PS1" -IsolatedLabVM -CheckOnly
+
+
+
+Get-NetFirewallRule -Group "NovaLabStart" -ErrorAction SilentlyContinue |
+    Where-Object {
+        $_.Name -in @(
+            "NovaLabStart-Allow",
+            "NovaLabStart-BlockOthers",
+            "NovaLabStart-MasterSeal"
+        )
+    } |
+    Remove-NetFirewallRule
