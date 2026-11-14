@@ -1,3 +1,11 @@
+Get-AppxPackage -AllUsers -Name "Microsoft.LanguageExperiencePackpl-PL" | ForEach-Object { Remove-AppxPackage -Package $_.PackageFullName -AllUsers -ErrorAction Stop }
+
+Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -eq "Microsoft.LanguageExperiencePackpl-PL" } | ForEach-Object { Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -ErrorAction Stop }
+
+& "$env:WINDIR\System32\Sysprep\Sysprep.exe" /generalize /oobe /shutdown
+Get-Content "$env:WINDIR\System32\Sysprep\Panther\setuperr.log" -Tail 20
+
+
 & "$env:WINDIR\System32\Sysprep\Sysprep.exe" /generalize /oobe /shutdown
 
 icacls "C:\Lab" /grant '*S-1-5-19:RX'; icacls "C:\Lab\start-juice-shop.cmd" /grant '*S-1-5-19:RX'; icacls "C:\Lab\juice-shop" /grant '*S-1-5-19:(OI)(CI)M' /T /Q
