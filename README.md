@@ -1,3 +1,10 @@
+icacls "C:\Lab" /grant '*S-1-5-19:RX'; icacls "C:\Lab\start-juice-shop.cmd" /grant '*S-1-5-19:RX'; icacls "C:\Lab\juice-shop" /grant '*S-1-5-19:(OI)(CI)M' /T /Q
+
+Start-ScheduledTask -TaskName "LabJuiceShop"
+Get-ScheduledTask -TaskName "LabJuiceShop" | Select-Object TaskName,State; Get-Content "C:\Lab\juice-shop\startup.log" -Tail 30
+
+
+
 $t = Get-ScheduledTask -TaskName "LabJuiceShop"; $t.Actions | Format-List Execute,Arguments,WorkingDirectory; $t.Principal | Format-List UserId,LogonType,RunLevel; Get-Content "C:\Lab\start-juice-shop.cmd"
 
 
