@@ -1,3 +1,11 @@
+(Get-ScheduledTask -TaskName "LabJuiceShop").Actions | Format-List Execute, Arguments, WorkingDirectory
+Get-Content "C:\Lab\start-juice-shop.cmd"
+Test-Path "C:\Lab\juice-shop\package.json"
+Test-Path "C:\Program Files\nodejs\npm.cmd"
+
+
+
+
 $ErrorActionPreference = "Stop"
 
 if (!(Test-Path "C:\Lab\juice-shop\package.json")) {
