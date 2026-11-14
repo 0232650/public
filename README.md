@@ -1,3 +1,8 @@
+New-NetFirewallRule -DisplayName "LAB Juice Shop TCP 3000" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 3000 -RemoteAddress 10.60.0.0/24 -Profile Any
+
+
+
+
 foreach ($p in (Get-AppxPackage -AllUsers -Name 'Microsoft.Winget.Source')) {
     Remove-AppxPackage -Package $p.PackageFullName -AllUsers -ErrorAction Stop
 }
