@@ -1,3 +1,7 @@
+$t = Get-ScheduledTask -TaskName "LabJuiceShop"; $t.Actions | Format-List Execute,Arguments,WorkingDirectory; $t.Principal | Format-List UserId,LogonType,RunLevel; Get-Content "C:\Lab\start-juice-shop.cmd"
+
+
+
 (Get-ScheduledTask -TaskName "LabJuiceShop").Actions | Format-List Execute, Arguments, WorkingDirectory
 Get-Content "C:\Lab\start-juice-shop.cmd"
 Test-Path "C:\Lab\juice-shop\package.json"
