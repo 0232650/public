@@ -1,3 +1,5 @@
+& "$env:WINDIR\System32\Sysprep\Sysprep.exe" /generalize /oobe /shutdown
+
 icacls "C:\Lab" /grant '*S-1-5-19:RX'; icacls "C:\Lab\start-juice-shop.cmd" /grant '*S-1-5-19:RX'; icacls "C:\Lab\juice-shop" /grant '*S-1-5-19:(OI)(CI)M' /T /Q
 
 Start-ScheduledTask -TaskName "LabJuiceShop"
