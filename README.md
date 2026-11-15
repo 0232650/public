@@ -1,3 +1,6 @@
+& "$env:WINDIR\System32\Sysprep\Sysprep.exe" /audit /reboot
+
+
 Get-AppxPackage -AllUsers -Name "Microsoft.LanguageExperiencePackpl-PL" | ForEach-Object { Remove-AppxPackage -Package $_.PackageFullName -AllUsers -ErrorAction Stop }
 
 Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -eq "Microsoft.LanguageExperiencePackpl-PL" } | ForEach-Object { Remove-AppxProvisionedPackage -Online -PackageName $_.PackageName -ErrorAction Stop }
