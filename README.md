@@ -1,3 +1,20 @@
+$t = Get-ScheduledTask -TaskName "LabJuiceShop"
+
+$t.Settings | Format-List `
+    Enabled,AllowDemandStart,RunOnlyIfIdle,RunOnlyIfNetworkAvailable,`
+    DisallowStartIfOnBatteries,MultipleInstances,ExecutionTimeLimit
+
+Get-ScheduledTaskInfo -TaskName "LabJuiceShop" |
+    Format-List LastRunTime,LastTaskResult
+
+Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
+    Select-Object ProcessId,CreationDate,CommandLine |
+    Format-List
+
+
+
+
+
 # Adresy IPv4 Windowsa
 Get-NetIPAddress -AddressFamily IPv4 |
     Select-Object InterfaceAlias, IPAddress
