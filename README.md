@@ -1,48 +1,18 @@
-$ErrorActionPreference = "Stop"
+$t = Get-ScheduledTask -TaskName "LabJuiceShop"
 
-$node = "C:\Program Files\nodejs\node.exe"
-$app = "C:\Lab\juice-shop\build\app.js"
-$launcher = "C:\Lab\start-juice-shop-direct.cmd"
-$log = "C:\Lab\juice-shop\startup-direct.log"
+$t | Select-Object TaskName, State
+$t.Actions | Format-List Execute, Arguments, WorkingDirectory
+$t.Principal | Format-List UserId, LogonType, RunLevel
 
-# Sprawdzenie plikow przed zmiana
-foreach ($path in @($node, $app)) {
-    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
-        throw "Brak pliku: $path. Nie zmieniono zadania."
-    }
-}
+$i = Get-ScheduledTaskInfo -TaskName "LabJuiceShop"
+$i | Format-List LastRunTime, LastTaskResult
+"Kod HEX: 0x{0:X8}" -f $i.LastTaskResult
 
-# Kopia konfiguracji zadania
-$backup = "C:\Lab\LabJuiceShop-$(Get-Date -Format yyyyMMdd-HHmmss).xml"
-Export-ScheduledTask -TaskName "LabJuiceShop" |
-    Set-Content -LiteralPath $backup -Encoding Unicode
+"Plik startowy istnieje:"
+Test-Path "C:\Lab\start-juice-shop-direct.cmd"
 
-# Nowy sposob startu i osobny log
-$lines = @(
-    "@echo off"
-    'cd /d "C:\Lab\juice-shop"'
-    "if errorlevel 1 exit /b 11"
-    'echo [%date% %time%] START >> "C:\Lab\juice-shop\startup-direct.log"'
-    '"C:\Program Files\nodejs\node.exe" "C:\Lab\juice-shop\build\app.js" >> "C:\Lab\juice-shop\startup-direct.log" 2>&1'
-    "exit /b %errorlevel%"
-)
-$lines | Set-Content -LiteralPath $launcher -Encoding ASCII
+"Zawartosc pliku startowego:"
+Get-Content "C:\Lab\start-juice-shop-direct.cmd" -ErrorAction Continue
 
-Stop-ScheduledTask -TaskName "LabJuiceShop"
-
-$action = New-ScheduledTaskAction `
-    -Execute "$env:windir\System32\cmd.exe" `
-    -Argument "/d /c C:\Lab\start-juice-shop-direct.cmd" `
-    -WorkingDirectory "C:\Lab\juice-shop"
-
-Set-ScheduledTask -TaskName "LabJuiceShop" -Action $action |
-    Out-Null
-
-Start-ScheduledTask -TaskName "LabJuiceShop"
-Start-Sleep -Seconds 15
-
-Get-ScheduledTask -TaskName "LabJuiceShop" |
-    Select-Object TaskName, State
-
-Get-Content -LiteralPath $log -Tail 20
-curl.exe -I --max-time 10 http://127.0.0.1:3000/
+"Plik aplikacji istnieje:"
+Test-Path "C:\Lab\juice-shop\build\app.js"
